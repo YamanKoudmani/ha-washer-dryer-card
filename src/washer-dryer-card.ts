@@ -4,7 +4,13 @@ import { classMap } from 'lit/directives/class-map.js';
 import type { HomeAssistant } from 'custom-card-helpers';
 import { fireEvent } from 'custom-card-helpers';
 import type { WasherDryerCardConfig, MachineConfig, MachineStateInfo } from './types';
-import { CARD_VERSION } from './const';
+import {
+  CARD_VERSION,
+  WASHER_PHASES,
+  DRYER_PHASES,
+  PHASE_LABELS,
+  PHASE_ICONS,
+} from './const';
 import { resolveMachineState } from './utils';
 import './editor';
 
@@ -78,6 +84,12 @@ export class WasherDryerCard extends LitElement {
     const info: MachineStateInfo = resolveMachineState(this.hass, machineConfig, isWasher);
     const entityId = machineConfig.entity;
 
+    const phases = isWasher ? WASHER_PHASES : DRYER_PHASES;
+    const steps = phases.map((phase, i) => ({
+      label: info.stepLabels[i] || PHASE_LABELS[phase] || phase,
+      icon: PHASE_ICONS[phase] || '',
+    }));
+
     // Build the status label
     let statusText = info.stateLabel;
     if (info.showRemainingTime) {
@@ -118,28 +130,89 @@ export class WasherDryerCard extends LitElement {
         </div>
 
         ${this._config?.show_progress_bar !== false && info.stepIndex >= 0
-          ? html`
-              <div class="step-indicator">
-                ${info.stepLabels.map(
-                  (label, i) => html`
-                    <div class="step-segment">
-                      ${i > 0 ? html`<div class="step-connector"></div>` : nothing}
-                      <div
-                        class="step ${classMap({
-                          'step-active': i === info.stepIndex,
-                          'step-past': i < info.stepIndex,
-                          'step-future': i > info.stepIndex,
-                        })}"
-                      >
-                        <span class="step-label">${label}</span>
-                      </div>
-                    </div>
-                  `,
-                )}
-              </div>
-            `
+          ? this._renderPhaseDiagram(steps, info.stepIndex, isWasher)
           : nothing}
       </div>
+    `;
+  }
+
+  /** Render SVG chevron phase diagram */
+  private _renderPhaseDiagram(
+    steps: Array<{ label: string; icon: string }>,
+    stepIndex: number,
+    isWasher: boolean,
+  ) {
+    const washerPaths = [
+      { d: 'M2,2 L85,2 L100,25 L85,48 L2,48 Z', cx: 51, tx: 0 },
+      { d: 'M2,2 L85,2 L100,25 L85,48 L2,48 L17,25 Z', cx: 134, tx: 83 },
+      { d: 'M2,2 L85,2 L100,25 L85,48 L2,48 L17,25 Z', cx: 217, tx: 166 },
+      { d: 'M2,2 L100,2 L100,48 L2,48 L17,25 Z', cx: 300, tx: 249 },
+    ];
+
+    const dryerPaths = [
+      { d: 'M2,2 L115,2 L130,25 L115,48 L2,48 Z', cx: 66, tx: 0 },
+      { d: 'M2,2 L115,2 L130,25 L115,48 L2,48 L17,25 Z', cx: 179, tx: 113 },
+      { d: 'M2,2 L125,2 L125,48 L2,48 L17,25 Z', cx: 289.5, tx: 226 },
+    ];
+
+    const pathData = isWasher ? washerPaths : dryerPaths;
+
+    return html`
+      <svg
+        viewBox="0 0 355 50"
+        preserveAspectRatio="xMidYMid meet"
+        style="width: 100%; display: block; margin-top: 4px;"
+      >
+        ${steps.map((step, i) => {
+          const isActive = i === stepIndex;
+          const fill = isActive
+            ? 'var(--primary-color)'
+            : 'rgba(var(--rgb-primary-color, 3, 169, 244), 0.15)';
+          const textColor = isActive
+            ? 'var(--text-primary-color, white)'
+            : 'var(--primary-color)';
+          const { d, cx, tx } = pathData[i];
+          return html`
+            <g>
+              <path
+                d="${d}"
+                transform="translate(${tx}, 0)"
+                fill="${fill}"
+                stroke="var(--divider-color)"
+                stroke-width="1"
+              />
+              <foreignObject
+                x="${cx - 10}"
+                y="4"
+                width="20"
+                height="20"
+              >
+                <div
+                  xmlns="http://www.w3.org/1999/xhtml"
+                  style="display: flex; align-items: center; justify-content: center; height: 100%;"
+                >
+                  <ha-icon
+                    icon="${step.icon}"
+                    style="--mdc-icon-size: 16px; color: ${textColor};"
+                  ></ha-icon>
+                </div>
+              </foreignObject>
+              <text
+                x="${cx}"
+                y="38"
+                text-anchor="middle"
+                dominant-baseline="middle"
+                fill="${textColor}"
+                font-family="sans-serif"
+                font-size="13px"
+                font-weight="bold"
+              >
+                ${step.label}
+              </text>
+            </g>
+          `;
+        })}
+      </svg>
     `;
   }
 
@@ -330,64 +403,11 @@ export class WasherDryerCard extends LitElement {
         white-space: nowrap;
       }
 
-      /* ─── Step Indicator ─── */
+      /* ─── Phase Diagram ─── */
 
-      .step-indicator {
-        display: flex;
-        align-items: center;
-        width: 100%;
-      }
-
-      .step-segment {
-        display: flex;
-        align-items: center;
-        flex: 1;
-        min-width: 0;
-      }
-
-      .step-connector {
-        flex-shrink: 0;
-        width: 8px;
-        height: 3px;
-        background: var(--divider-color, rgba(0, 0, 0, 0.12));
-        border-radius: 1px;
-        margin-right: -1px;
-      }
-
-      .step {
-        flex: 1;
-        padding: 6px 4px;
-        border-radius: 8px;
-        text-align: center;
-        font-size: 12px;
-        font-weight: 500;
-        line-height: 1.2;
-        transition: background 0.3s ease, color 0.3s ease;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-
-      .step-past {
-        background: rgba(var(--rgb-primary-color, 3, 169, 244), 0.15);
-        color: var(--primary-color);
-      }
-
-      .step-active {
-        background: var(--primary-color);
-        color: var(--text-primary-color, white);
-      }
-
-      .step-future {
-        background: var(--secondary-background-color, rgba(0, 0, 0, 0.04));
-        color: var(--disabled-text-color);
-      }
-
-      /* Connect steps: the connector after a past/active step gets the theme color */
-      .step-past + .step-connector,
-      .step-active + .step-connector {
-        background: var(--primary-color);
-        opacity: 0.5;
+      svg {
+        margin-top: 4px;
+        display: block;
       }
     `;
   }

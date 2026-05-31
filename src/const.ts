@@ -1,6 +1,6 @@
 import type { WasherPhase, DryerPhase } from './types';
 
-export const CARD_VERSION = '1.0.0';
+export const CARD_VERSION = '1.1.0';
 
 /** Default machine names */
 export const DEFAULT_WASHER_NAME = 'Washing Machine';
@@ -75,12 +75,12 @@ export const PHASE_LABELS: Record<string, string> = {
 /** Phase icons */
 export const PHASE_ICONS: Record<string, string> = {
   wash: 'mdi:waves',
-  rinse: 'mdi:water',
-  spin: 'mdi:rotate-right',
-  finish: 'mdi:check-circle-outline',
-  dry: 'mdi:weather-sunny',
+  rinse: 'mdi:shower-head',
+  spin: 'mdi:fan',
+  finish: 'mdi:check-circle',
+  dry: 'mdi:heat-wave',
   cool: 'mdi:snowflake',
-  finished: 'mdi:check-circle-outline',
+  finished: 'mdi:check-circle',
 };
 
 /** Machine state → human-readable label */
