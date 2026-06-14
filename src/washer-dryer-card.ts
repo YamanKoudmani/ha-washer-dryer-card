@@ -1,4 +1,4 @@
-import { LitElement, html, css, nothing } from 'lit';
+import { LitElement, html, svg, css, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import type { HomeAssistant } from 'custom-card-helpers';
@@ -157,7 +157,7 @@ export class WasherDryerCard extends LitElement {
 
     const pathData = isWasher ? washerPaths : dryerPaths;
 
-    return html`
+    return svg`
       <svg
         viewBox="0 0 355 50"
         preserveAspectRatio="xMidYMid meet"
@@ -172,7 +172,7 @@ export class WasherDryerCard extends LitElement {
             ? 'var(--text-primary-color, white)'
             : 'var(--primary-color)';
           const { d, cx, tx } = pathData[i];
-          return html`
+          return svg`
             <g>
               <path
                 d="${d}"
