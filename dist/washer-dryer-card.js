@@ -214,7 +214,7 @@ function t(t,e,i,s){var n,r=arguments.length,o=r<3?e:null===s?s=Object.getOwnPro
           ${i.power?B`<div class="power-badge">${i.power}</div>`:q}
         </div>
 
-        ${!1!==this._config?.show_progress_bar&&i.stepIndex>=0?this._renderPhaseDiagram(n,i.stepIndex,e):q}
+        ${!1!==this._config?.show_progress_bar&&(i.stepIndex>=0||i.isRunning)?this._renderPhaseDiagram(n,i.stepIndex,e):q}
       </div>
     `}_renderPhaseDiagram(t,e,i){const s=i?[{d:"M2,2 L85,2 L100,25 L85,48 L2,48 Z",cx:51,tx:0},{d:"M2,2 L85,2 L100,25 L85,48 L2,48 L17,25 Z",cx:134,tx:83},{d:"M2,2 L85,2 L100,25 L85,48 L2,48 L17,25 Z",cx:217,tx:166},{d:"M2,2 L100,2 L100,48 L2,48 L17,25 Z",cx:300,tx:249}]:[{d:"M2,2 L115,2 L130,25 L115,48 L2,48 Z",cx:66,tx:0},{d:"M2,2 L115,2 L130,25 L115,48 L2,48 L17,25 Z",cx:179,tx:113},{d:"M2,2 L125,2 L125,48 L2,48 L17,25 Z",cx:289.5,tx:226}];return B`
       <svg
@@ -438,4 +438,4 @@ function t(t,e,i,s){var n,r=arguments.length,o=r<3?e:null===s?s=Object.getOwnPro
         margin-top: 4px;
         display: block;
       }
-    `}};t([pt({attribute:!1})],Pt.prototype,"hass",void 0),t([ut()],Pt.prototype,"_config",void 0),Pt=t([ht("washer-dryer-card")],Pt),window.customCards=window.customCards||[],window.customCards.push({type:"washer-dryer-card",name:"Washer Dryer Card",description:"Monitor washer and dryer status with cycle progress tracking",preview:!0}),console.info("%c WASHER-DRYER-CARD %c v1.1.1 ","color: white; background: #1565c0; font-weight: bold;","color: #1565c0; background: white; font-weight: bold;");export{Pt as WasherDryerCard};
+    `}};t([pt({attribute:!1})],Pt.prototype,"hass",void 0),t([ut()],Pt.prototype,"_config",void 0),Pt=t([ht("washer-dryer-card")],Pt),window.customCards=window.customCards||[],window.customCards.push({type:"washer-dryer-card",name:"Washer Dryer Card",description:"Monitor washer and dryer status with cycle progress tracking",preview:!0}),console.info("%c WASHER-DRYER-CARD %c v1.1.2 ","color: white; background: #1565c0; font-weight: bold;","color: #1565c0; background: white; font-weight: bold;");export{Pt as WasherDryerCard};

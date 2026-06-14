@@ -129,7 +129,7 @@ export class WasherDryerCard extends LitElement {
             : nothing}
         </div>
 
-        ${this._config?.show_progress_bar !== false && info.stepIndex >= 0
+        ${this._config?.show_progress_bar !== false && (info.stepIndex >= 0 || info.isRunning)
           ? this._renderPhaseDiagram(steps, info.stepIndex, isWasher)
           : nothing}
       </div>

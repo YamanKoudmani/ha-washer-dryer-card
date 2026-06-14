@@ -1,6 +1,6 @@
 import type { WasherPhase, DryerPhase } from './types';
 
-export const CARD_VERSION = '1.1.1';
+export const CARD_VERSION = '1.1.2';
 
 /** Default machine names */
 export const DEFAULT_WASHER_NAME = 'Washing Machine';
