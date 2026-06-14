@@ -220,7 +220,7 @@ function t(t,e,i,s){var n,r=arguments.length,o=r<3?e:null===s?s=Object.getOwnPro
       <svg
         viewBox="0 0 355 50"
         preserveAspectRatio="xMidYMid meet"
-        style="width: 100%; display: block; margin-top: 4px;"
+        style="width: 100%; height: auto; display: block; margin-top: 4px;"
       >
         ${t.map((t,i)=>{const n=i===e,r=n?"var(--primary-color)":"rgba(var(--rgb-primary-color, 3, 169, 244), 0.15)",o=n?"var(--text-primary-color, white)":"var(--primary-color)",{d:a,cx:c,tx:h}=s[i];return B`
             <g>

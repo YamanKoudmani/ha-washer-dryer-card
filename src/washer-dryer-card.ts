@@ -161,11 +161,11 @@ export class WasherDryerCard extends LitElement {
       <svg
         viewBox="0 0 355 50"
         preserveAspectRatio="xMidYMid meet"
-        style="width: 100%; display: block; margin-top: 4px;"
+        style="width: 100%; height: auto; display: block; margin-top: 4px;"
       >
         ${steps.map((step, i) => {
           const isActive = i === stepIndex;
-          const fill = isActive
+          const pathColor = isActive
             ? 'var(--primary-color)'
             : 'rgba(var(--rgb-primary-color, 3, 169, 244), 0.15)';
           const textColor = isActive
@@ -177,7 +177,7 @@ export class WasherDryerCard extends LitElement {
               <path
                 d="${d}"
                 transform="translate(${tx}, 0)"
-                fill="${fill}"
+                fill="${pathColor}"
                 stroke="var(--divider-color)"
                 stroke-width="1"
               />
