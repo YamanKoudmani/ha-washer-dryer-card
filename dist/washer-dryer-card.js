@@ -284,7 +284,7 @@ function t(t,e,i,s){var n,r=arguments.length,o=r<3?e:null===s?s=Object.getOwnPro
       }
 
       ha-card {
-        padding: 20px;
+        padding: 0;
         box-sizing: border-box;
         border-radius: var(--ha-card-border-radius, 12px);
       }
@@ -294,8 +294,8 @@ function t(t,e,i,s){var n,r=arguments.length,o=r<3?e:null===s?s=Object.getOwnPro
         font-size: 22px;
         font-weight: 600;
         color: var(--primary-text-color);
-        margin: 0 0 16px 0;
-        padding: 0;
+        margin: 0 0 8px 0;
+        padding: 14px 16px 0 16px;
         line-height: 1.2;
       }
 
@@ -323,25 +323,26 @@ function t(t,e,i,s){var n,r=arguments.length,o=r<3?e:null===s?s=Object.getOwnPro
       .machines {
         display: flex;
         flex-direction: column;
-        gap: 12px;
+        gap: 0;
       }
 
       /* ─── Machine Panel ─── */
 
       .machine-panel {
-        background: var(
-          --ha-card-background,
-          var(--card-background-color, var(--secondary-background-color, #f5f5f5))
-        );
-        border: 1px solid var(--divider-color, rgba(0, 0, 0, 0.08));
-        border-radius: var(--ha-card-border-radius, 12px);
-        padding: 16px;
+        background: none;
+        border: 0;
+        border-radius: 0;
+        padding: 12px 16px;
         cursor: pointer;
         transition: background 0.2s, box-shadow 0.2s;
         display: flex;
         flex-direction: column;
-        gap: 14px;
+        gap: 12px;
         outline: none;
+      }
+
+      .machine-panel:not(:first-child) {
+        border-top: 1px solid var(--divider-color, rgba(0, 0, 0, 0.08));
       }
 
       .machine-panel:focus-visible {
@@ -349,10 +350,7 @@ function t(t,e,i,s){var n,r=arguments.length,o=r<3?e:null===s?s=Object.getOwnPro
       }
 
       .machine-panel:hover {
-        box-shadow: var(
-          --ha-card-box-shadow,
-          0 2px 8px rgba(0, 0, 0, 0.08)
-        );
+        background: rgba(255, 255, 255, 0.04);
       }
 
       .machine-panel.unavailable {
